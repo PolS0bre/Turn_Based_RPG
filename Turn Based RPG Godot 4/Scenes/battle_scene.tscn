@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://dvkiy1ka2q0py"]
+
+[ext_resource type="Texture2D" uid="uid://b7im3l83r63ca" path="res://Sprites/Dragon.png" id="1_63jiv"]
+[ext_resource type="Script" path="res://Scripts/turn_manager.gd" id="1_txayu"]
+[ext_resource type="PackedScene" uid="uid://bfu5q3ic43x6e" path="res://Objects/character.tscn" id="1_ua08d"]
+[ext_resource type="Resource" uid="uid://jokvq0ecufka" path="res://Objects/Combat Actions/Slash.tres" id="3_kfpkn"]
+[ext_resource type="Texture2D" uid="uid://d1n3wv5fyq6ym" path="res://Sprites/Reptile.png" id="4_avdvm"]
+[ext_resource type="Resource" uid="uid://cip02fd6bwx17" path="res://Objects/Combat Actions/Heal.tres" id="4_mhxy2"]
+[ext_resource type="Resource" uid="uid://bdeodf2ts3f1v" path="res://Objects/Combat Actions/Stomp.tres" id="5_q0ui3"]
+[ext_resource type="Script" path="res://Scripts/player_ui.gd" id="8_70saf"]
+[ext_resource type="Script" path="res://Scripts/combat_button.gd" id="8_pg7va"]
+
+[node name="BattleScene" type="Node2D" node_paths=PackedStringArray("player_char", "enemy_char")]
+script = ExtResource("1_txayu")
+player_char = NodePath("Player")
+enemy_char = NodePath("Enemy")
+
+[node name="Player" parent="." node_paths=PackedStringArray("opponent") instance=ExtResource("1_ua08d")]
+position = Vector2(-250, -75)
+is_player = true
+combat_actions = [ExtResource("3_kfpkn"), ExtResource("4_mhxy2"), ExtResource("5_q0ui3")]
+opponent = NodePath("../Enemy")
+visual = ExtResource("1_63jiv")
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("opponent") instance=ExtResource("1_ua08d")]
+position = Vector2(250, -75)
+combat_actions = [ExtResource("4_mhxy2"), ExtResource("3_kfpkn")]
+opponent = NodePath("../Player")
+visual = ExtResource("4_avdvm")
+flip_visual = true
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = -343.0
+offset_top = 49.0
+offset_right = -158.0
+offset_bottom = 185.0
+script = ExtResource("8_70saf")
+buttons = [NodePath("CombatAction"), NodePath("CombatAction2"), NodePath("CombatAction3"), NodePath("CombatAction4")]
+
+[node name="CombatAction" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Slash (5 DMG)"
+script = ExtResource("8_pg7va")
+
+[node name="CombatAction2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Slash (5 DMG)"
+script = ExtResource("8_pg7va")
+
+[node name="CombatAction3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Slash (5 DMG)"
+script = ExtResource("8_pg7va")
+
+[node name="CombatAction4" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Slash (5 DMG)"
+script = ExtResource("8_pg7va")
+
+[connection signal="pressed" from="VBoxContainer/CombatAction" to="VBoxContainer/CombatAction" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/CombatAction2" to="VBoxContainer/CombatAction2" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/CombatAction3" to="VBoxContainer/CombatAction3" method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/CombatAction4" to="VBoxContainer/CombatAction4" method="_on_pressed"]
